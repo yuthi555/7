@@ -1,0 +1,37 @@
+---
+- name: Create a ticket
+  snow_record:
+    username: admin
+    password: Swiftdzire@0587
+    instance: dev57831
+    state: present
+    table: change_request
+    data:
+      requested_by: "Abraham Lincoln"
+      category: "Software"
+      cmdb_ci: "DEVSQL01"
+      assignment_group: "Problem Solving"
+      assigned_to: "Problem Manager"
+      short_description: "Test ticket by PRM"
+      description: "Test ticket by PRM"
+      start_date: "2020-11-18 22:00:00"
+      end_date: "2020-11-18 23:00:00"
+      type: Normal
+  register: new_change
+- debug:
+    msg: "New change has been created : {{ new_change.record.number }} "
+- name: test change
+  snow_record:
+    username: admin
+    password: Swiftdzire@0587
+    instance: dev57831
+    state: present
+    table: change_task
+    data:
+      short_description: "Sample Task Creation for Change {{ new_change.record.number }}"
+      description: 'Nishant 2021| NON PROD Q3 Linux Patching QA'
+      change_request: "{{ new_change.record.number }}"
+  register: change_task
+- debug:
+    msg: "New change has been created : {{ change_task.record.number }} "  
+  
